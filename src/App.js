@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import React, { useState, useEffect } from 'react';
+import { setupInterceptors } from './api/axiosInstance';
+import SomeComponent from './components/SomeComponent';
+import { Alert, AlertTitle, Container } from '@mui/material';
+
+const App = () => {
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    setupInterceptors(setError);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      {error && (
+        
+        <Alert severity="error" onClose={() => setError('')}>
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      )}
+      <SomeComponent setError={setError} />
+    </Container>
   );
-}
+};
 
 export default App;
